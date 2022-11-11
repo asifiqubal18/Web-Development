@@ -18,3 +18,4 @@ else if (randomNumber == randomNumber2) {
 else {
     document.querySelector("h1").innerHTML = "Player2 won !!"
 }
+console.log("just for commit");
