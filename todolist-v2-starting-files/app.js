@@ -25,7 +25,7 @@ const itemSchema = {
 
 const listSchema = {
   name: String,
-  lists: itemSchema,
+  lists: [itemSchema],
 }
 const List = mongoose.model("List", listSchema);
 const Item = mongoose.model("Item", itemSchema);
@@ -67,6 +67,36 @@ app.get("/", function (req, res) {
     }
 
   })
+});
+let cnt = 0;
+app.get("/:customRoute", function (req, res) {
+  const temp = req.params.customRoute;
+
+  List.findOne({ name: temp }, function (err, listFound) {
+
+    if (!err) {
+      if (!listFound) {
+        // create list
+        // console.log("Does't exist");
+        // console.log(cnt);
+        // cnt = cnt + 1;
+        const list = new List({
+          name: temp,
+          lists: arrayItems,
+        });
+        list.save();
+        res.redirect("/" + temp);
+      }
+      else {
+        // render list
+        res.render("list", { listTitle: listFound.name, newListItems: listFound.lists });
+        // console.log("exist");
+      }
+    }
+    else {
+      console.log(err);
+    }
+  })
 
 
 
@@ -102,31 +132,7 @@ app.post("/delete", function (req, res) {
 
 });
 
-app.get("/:customRoute", function (req, res) {
-  const temp = req.params.customRoute;
 
-  List.findOne("name:temp", function (err, listFound) {
-
-    if (!err) {
-      if (!listFound) {
-        // create list
-        const list = new List({
-          name: temp,
-          items: arrayItems,
-        });
-        list.save();
-
-      }
-      else {
-        // render list
-        res.render("list", { listTitle: foundItems.name, newListItems: foundItems.items });
-      }
-    }
-  })
-
-
-
-});
 
 app.get("/about", function (req, res) {
   res.render("about");
