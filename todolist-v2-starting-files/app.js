@@ -68,7 +68,6 @@ app.get("/", function (req, res) {
 
   })
 });
-let cnt = 0;
 app.get("/:customRoute", function (req, res) {
   const temp = req.params.customRoute;
 
@@ -77,9 +76,6 @@ app.get("/:customRoute", function (req, res) {
     if (!err) {
       if (!listFound) {
         // create list
-        // console.log("Does't exist");
-        // console.log(cnt);
-        // cnt = cnt + 1;
         const list = new List({
           name: temp,
           lists: arrayItems,
@@ -90,7 +86,6 @@ app.get("/:customRoute", function (req, res) {
       else {
         // render list
         res.render("list", { listTitle: listFound.name, newListItems: listFound.lists });
-        // console.log("exist");
       }
     }
     else {
@@ -105,13 +100,24 @@ app.get("/:customRoute", function (req, res) {
 app.post("/", function (req, res) {
 
   const itemName = req.body.newItem;
+  const listName = req.body.list;
 
   const item = new Item({
     name: itemName,
   })
-  item.save();
 
-  res.redirect('/');
+  if (listName === "Today") {
+    item.save();
+    res.redirect('/');
+  }
+  else {
+    List.findOne({ name: listName }, function (err, foundList) {
+      foundList.lists.push(listName);
+      foundList.save();
+      res.redirect("/" + listName);
+    })
+  }
+
 
 
 });
@@ -119,15 +125,29 @@ app.post("/delete", function (req, res) {
 
 
   const checktrue = req.body.checkbox;
-  Item.findByIdAndRemove(checktrue, function (err) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      console.log("Succesfully deleted the item");
-    }
-  })
-  res.redirect('/');
+  const listName = req.body.lisTid;
+  if (listName === "Today") {
+    Item.findByIdAndRemove(checktrue, function (err) {
+      if (!err) {
+        res.redirect("/");
+      }
+
+    })
+
+  }
+  else {
+    List.findOneAndUpdate({ name: listName }, { $pull: { lists: { _id: checktrue } } }, function (err, foundList) {
+      if (!err) {
+        res.redirect("/" + listName);
+      }
+      else{
+        console.log(err);
+      }
+    })
+  }
+
+
+
 
 
 });
