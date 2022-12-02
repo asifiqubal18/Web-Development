@@ -1,7 +1,6 @@
 {
   "name": "todolist-v1",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +13,10 @@
     "express": "^4.16.3",
     "lodash": "^4.17.11",
     "mongoose": "^5.3.4",
+    "netlify": "^13.0.2",
     "nodemon": "^2.0.20"
-  }
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "description": ""
 }
