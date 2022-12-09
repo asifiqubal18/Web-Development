@@ -22,7 +22,7 @@ const Item = mongoose.model("Item", itemsSchema);
 
 
 const item1 = new Item({
-  name: "Welcome to your todolist!"
+  name: "Welcome to your todolist application!"
 });
 
 const item2 = new Item({
