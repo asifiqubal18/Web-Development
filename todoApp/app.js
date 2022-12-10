@@ -26,7 +26,7 @@ const item1 = new Item({
 });
 
 const item2 = new Item({
-  name: "Hit the + button to add a new item."
+  name: "Hit the + button to add a new itm."
 });
 
 const item3 = new Item({
