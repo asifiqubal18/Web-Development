@@ -30,7 +30,7 @@ const item2 = new Item({
 });
 
 const item3 = new Item({
-  name: "hit the item."
+  name: "hit the item .."
 });
 
 const defaultItems = [item1, item2, item3];
